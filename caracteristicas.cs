@@ -1,6 +1,6 @@
 namespace rpg_2022_exequiel1984
 {
-    public class caracteristicas {
+    public class Caracteristicas {
         private int velocidad;
         private int destreza;
         private int fuerza;
@@ -13,8 +13,8 @@ namespace rpg_2022_exequiel1984
         public int Nivel { get => nivel; set => nivel = value; }
         public int Armadura { get => armadura; set => armadura = value; }
 
-        public caracteristicas(){
-            
+        public Caracteristicas(){
+
         }
     }
 }

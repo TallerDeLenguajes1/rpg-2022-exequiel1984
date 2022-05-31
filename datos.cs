@@ -1,6 +1,6 @@
 namespace rpg_2022_exequiel1984
 {
-    public class datos {
+    public class Datos {
         private string tipo;
         private string nombre;
         private string apodo;
@@ -15,8 +15,10 @@ namespace rpg_2022_exequiel1984
         public int Edad { get => edad; set => edad = value; }
         public int Salud { get => salud; set => salud = value; }
 
-        public datos(){
-            
+        public Datos(){
+            this.Tipo = "";
+            this.Nombre = "";
+            this.Apodo = "";
         }
     }
 }
