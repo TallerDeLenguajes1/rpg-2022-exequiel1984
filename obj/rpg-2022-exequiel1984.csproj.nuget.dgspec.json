@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Exequiel\\taller\\rpg-2022-exequiel1984\\rpg-2022-exequiel1984.csproj": {}
+    "C:\\Users\\Alumno\\Desktop\\rpg-2022-exequiel1984\\rpg-2022-exequiel1984.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Exequiel\\taller\\rpg-2022-exequiel1984\\rpg-2022-exequiel1984.csproj": {
+    "C:\\Users\\Alumno\\Desktop\\rpg-2022-exequiel1984\\rpg-2022-exequiel1984.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Exequiel\\taller\\rpg-2022-exequiel1984\\rpg-2022-exequiel1984.csproj",
+        "projectUniqueName": "C:\\Users\\Alumno\\Desktop\\rpg-2022-exequiel1984\\rpg-2022-exequiel1984.csproj",
         "projectName": "rpg-2022-exequiel1984",
-        "projectPath": "C:\\Users\\Exequiel\\taller\\rpg-2022-exequiel1984\\rpg-2022-exequiel1984.csproj",
-        "packagesPath": "C:\\Users\\Exequiel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Exequiel\\taller\\rpg-2022-exequiel1984\\obj\\",
+        "projectPath": "C:\\Users\\Alumno\\Desktop\\rpg-2022-exequiel1984\\rpg-2022-exequiel1984.csproj",
+        "packagesPath": "C:\\Users\\Alumno\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Alumno\\Desktop\\rpg-2022-exequiel1984\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Exequiel\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Alumno\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
