@@ -1,4 +1,8 @@
-using rpg_2022_exequiel1984;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.IO;
+
+using espacioDatos;
 
 namespace rpg_2022_exequiel1984
 {
@@ -11,10 +15,13 @@ namespace rpg_2022_exequiel1984
 
         public personaje(){
             this.Caracteristicas = new Caracteristicas();
-
             this.Datos = new Datos();
-            
-
         }
+
+        static void CrearPersonaje(){
+            var NuevoPersonaje = new personaje();
+            NuevoPersonaje.Datos.CargarDatos();
+            System.Console.WriteLine(NuevoPersonaje.Datos.Salud);
+        }       
     }
 }
