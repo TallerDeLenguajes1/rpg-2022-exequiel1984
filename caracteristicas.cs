@@ -1,6 +1,6 @@
-namespace rpg_2022_exequiel1984
+/* namespace rpg_2022_exequiel1984
 {
-    public class Caracteristicas {
+     public class Caracteristicas {
         private int velocidad;
         private int destreza;
         private int fuerza;
@@ -26,8 +26,8 @@ namespace rpg_2022_exequiel1984
             this.Fuerza = _fuerza;
             this.Nivel = _nivel;
             this.Armadura = _armadura;
-        }
+        } 
 
         
     }
-}
+} */

@@ -5,15 +5,24 @@ using System;
 
 using rpg_2022_exequiel1984;
 
+Random rand = new Random();
+
 var ListadoPersonajes = new List<Personaje>();
 
-var NuevoPersonaje = new Personaje(); 
+int CantidadPersonajes;
+CantidadPersonajes = rand.Next(1,6);
 
-CargarDatos(NuevoPersonaje);
-//string salida = NuevoPersonaje.Edad().ToString();
+for (int i = 0; i < CantidadPersonajes; i++)
+{
+    var NuevoPersonaje = new Personaje(); 
 
-mostrarPersonaje(NuevoPersonaje);
+    CargarDatos(NuevoPersonaje);
+    CargarCaracteristicas(NuevoPersonaje);  
 
+    ListadoPersonajes.Add(NuevoPersonaje);
+}
+
+MostrarLista(ListadoPersonajes);
 
 void CargarDatos(Personaje personaje)
 {            
@@ -28,10 +37,28 @@ void CargarDatos(Personaje personaje)
         personaje.Salud = 100;
 }
 
-void mostrarPersonaje(Personaje personaje){
-    System.Console.WriteLine("Tipo: " + personaje.Tipo);
-    System.Console.WriteLine("Nombre: " + personaje.Nombre);
-    System.Console.WriteLine("Fecha de Nacimiento: " + personaje.FechaNacimiento);
-    System.Console.WriteLine("Edad: " + personaje.Edad);
-    System.Console.WriteLine("Salud: " + personaje.Salud);
+void CargarCaracteristicas(Personaje personaje){
+        Random rand = new Random();
+        personaje.Velocidad = rand.Next(1, 11);
+        personaje.Destreza = rand.Next(1, 6);
+        personaje.Fuerza = rand.Next(1, 11);
+        personaje.Nivel = rand.Next(1, 11);
+        personaje.Armadura = rand.Next(1, 11);
+}
+
+static void MostrarLista(List<Personaje> Lista)
+{
+    foreach (var personaje in Lista)
+    {
+        System.Console.WriteLine("\nTipo: " + personaje.Tipo);
+        System.Console.WriteLine("Nombre: " + personaje.Nombre);
+        System.Console.WriteLine("Fecha de Nacimiento: " + personaje.FechaNacimiento.ToShortDateString());
+        System.Console.WriteLine("Edad: " + personaje.Edad);
+        System.Console.WriteLine("Salud: " + personaje.Salud);
+        System.Console.WriteLine("Velocidad: " + personaje.Velocidad);
+        System.Console.WriteLine("Destreza: " + personaje.Destreza);
+        System.Console.WriteLine("Fuerza: " + personaje.Fuerza);
+        System.Console.WriteLine("Nivel: " + personaje.Nivel);
+        System.Console.WriteLine("Armadura: " + personaje.Armadura + "\n");
+    }
 }
