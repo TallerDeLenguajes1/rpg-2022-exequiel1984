@@ -51,9 +51,7 @@ namespace rpg_2022_exequiel1984
                 --edad; 
             }
             return edad;
-        }
-
-        
+        }  
 
     }
 }

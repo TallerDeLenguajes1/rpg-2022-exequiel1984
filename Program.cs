@@ -8,25 +8,29 @@ using rpg_2022_exequiel1984;
 Random rand = new Random();
 
 var ListadoPersonajes = new List<Personaje>();
+var Ganadores = new List<Personaje>();
+
+Personaje Peleador1 = new Personaje();
+Personaje Peleador2 = new Personaje();
 
 int CantidadPersonajes;
 CantidadPersonajes = rand.Next(1,6);
 
-var NuevoPersonaje = new Personaje(); 
+/* var NuevoPersonaje = new Personaje(); 
 
     CargarDatos(NuevoPersonaje);
     CargarCaracteristicas(NuevoPersonaje); 
-    Ataque(NuevoPersonaje);
+    CalcularAtaque(NuevoPersonaje);
 
 var Defensor = new Personaje();
 
     CargarDatos(Defensor);
     CargarCaracteristicas(Defensor); 
-    Defensa(Defensor);
+    CalcularDefensa(Defensor);
 
-ResultadoEnfrentamiento(NuevoPersonaje, Defensor);
+ResultadoEnfrentamiento(NuevoPersonaje, Defensor); */
 
-/* for (int i = 0; i < CantidadPersonajes; i++)
+for (int i = 0; i < CantidadPersonajes; i++)
 {
     var NuevoPersonaje = new Personaje(); 
 
@@ -36,7 +40,28 @@ ResultadoEnfrentamiento(NuevoPersonaje, Defensor);
     ListadoPersonajes.Add(NuevoPersonaje);
 }
 
-MostrarLista(ListadoPersonajes); */
+Peleador1 = SeleccionarPersonaje(ListadoPersonajes);
+MostrarPersonaje(Peleador1);
+Peleador2 = SeleccionarPersonaje(ListadoPersonajes);
+if (Peleador1.Nombre == Peleador2.Nombre)
+{
+    Peleador2 = SeleccionarPersonaje(ListadoPersonajes); 
+}
+
+MostrarPersonaje(Peleador2);
+
+
+
+
+//MostrarLista(ListadoPersonajes);
+
+
+Personaje SeleccionarPersonaje(List<Personaje> ListaPersonajes){
+
+    
+    return ListaPersonajes[rand.Next(0,ListadoPersonajes.Count())];
+}
+
 
 void CargarDatos(Personaje personaje)
 {            
@@ -77,7 +102,20 @@ static void MostrarLista(List<Personaje> Lista)
     }
 }
 
-void Ataque(Personaje personaje){
+void MostrarPersonaje(Personaje personaje){
+    System.Console.WriteLine("\nTipo: " + personaje.Tipo);
+        System.Console.WriteLine("Nombre: " + personaje.Nombre);
+        System.Console.WriteLine("Fecha de Nacimiento: " + personaje.FechaNacimiento.ToShortDateString());
+        System.Console.WriteLine("Edad: " + personaje.Edad);
+        System.Console.WriteLine("Salud: " + personaje.Salud);
+        System.Console.WriteLine("Velocidad: " + personaje.Velocidad);
+        System.Console.WriteLine("Destreza: " + personaje.Destreza);
+        System.Console.WriteLine("Fuerza: " + personaje.Fuerza);
+        System.Console.WriteLine("Nivel: " + personaje.Nivel);
+        System.Console.WriteLine("Armadura: " + personaje.Armadura + "\n");
+}
+
+void CalcularAtaque(Personaje personaje){
     Random rand = new Random();
 
     int PoderDisparo = personaje.Destreza * personaje.Fuerza * personaje.Nivel; 
@@ -85,7 +123,7 @@ void Ataque(Personaje personaje){
     personaje.ValorAtaque = PoderDisparo * EfectividadDisparo / 100;
 }
 
-void Defensa(Personaje personaje){
+void CalcularDefensa(Personaje personaje){
     Random rand = new Random();
 
     personaje.PoderDefensa = personaje.Armadura * personaje.Velocidad; 
