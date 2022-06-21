@@ -18,6 +18,14 @@ var NuevoPersonaje = new Personaje();
     CargarCaracteristicas(NuevoPersonaje); 
     Ataque(NuevoPersonaje);
 
+var Defensor = new Personaje();
+
+    CargarDatos(Defensor);
+    CargarCaracteristicas(Defensor); 
+    Defensa(Defensor);
+
+ResultadoEnfrentamiento(NuevoPersonaje, Defensor);
+
 /* for (int i = 0; i < CantidadPersonajes; i++)
 {
     var NuevoPersonaje = new Personaje(); 
@@ -69,16 +77,42 @@ static void MostrarLista(List<Personaje> Lista)
     }
 }
 
-int Ataque(Personaje personaje){
+void Ataque(Personaje personaje){
     Random rand = new Random();
 
     int PoderDisparo = personaje.Destreza * personaje.Fuerza * personaje.Nivel; 
-    System.Console.WriteLine("Poder: " + PoderDisparo);
     int EfectividadDisparo = rand.Next(1, 101);
-    EfectividadDisparo = EfectividadDisparo/100; // ERROR
-    System.Console.WriteLine("Efectividad: " + EfectividadDisparo);
-    int ValorAtaque = PoderDisparo * EfectividadDisparo;
-    System.Console.WriteLine("Valor Ataque: " + ValorAtaque);
-    return ValorAtaque;
+    personaje.ValorAtaque = PoderDisparo * EfectividadDisparo / 100;
 }
 
+void Defensa(Personaje personaje){
+    Random rand = new Random();
+
+    personaje.PoderDefensa = personaje.Armadura * personaje.Velocidad; 
+}
+
+void ResultadoEnfrentamiento(Personaje atacante, Personaje defensor){
+    int DanioProvocado;
+    int MaximoDanioProvocable = 500;
+
+    System.Console.WriteLine("Valor ataque: " + atacante.ValorAtaque);
+    System.Console.WriteLine("Poder Defensa: " + defensor.PoderDefensa);
+    System.Console.WriteLine("Maximo daño provocable: " + MaximoDanioProvocable);
+
+    if (atacante.ValorAtaque > defensor.PoderDefensa)
+    {
+        DanioProvocado = atacante.ValorAtaque - defensor.PoderDefensa;
+        DanioProvocado *= 100;
+        DanioProvocado /= MaximoDanioProvocable;
+    } else
+    {
+        System.Console.WriteLine("¡¡¡EL VALOR DE LA DEFENSA ES MAYOR AL VALOR DEL ATAQUE!!!");
+
+        DanioProvocado = 0;
+    }
+
+    System.Console.WriteLine("Daño Provocado: " + DanioProvocado);
+
+    defensor.Salud -= DanioProvocado;
+    System.Console.WriteLine("Salud Defensor: " + defensor.Salud);
+}
