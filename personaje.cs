@@ -53,5 +53,43 @@ namespace rpg_2022_exequiel1984
             return edad;
         }  
 
+        GetListadoCivilizaciones();
+
+static void GetNombre()
+        {
+            var url = $"https://random-names-api.herokuapp.com/random";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.Accept = "application/json";
+            try
+            {
+                using (WebResponse response = request.GetResponse())
+                {
+                    using (Stream strReader = response.GetResponseStream())
+                    {
+                        if (strReader == null) return;
+                        using (StreamReader objReader = new StreamReader(strReader))
+                        {
+                            string responseBody = objReader.ReadToEnd();
+                            
+                            Civilizaciones = JsonSerializer.Deserialize<ListCivilizaciones>(responseBody);
+                        
+                            foreach ( Civilization Civilizacion in Civilizaciones.Civilizations)
+                            {
+                              Console.WriteLine("Nombre: " + Civilizacion.Name);    
+                            }
+                            
+
+                        }
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                Console.WriteLine("Problemas de acceso a la API");
+            }
+        }
+
     }
 }
