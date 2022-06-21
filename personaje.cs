@@ -42,12 +42,8 @@ namespace rpg_2022_exequiel1984
             }
             return edad;
         }
-        /*
-        static void CrearPersonaje(){
-            var NuevoPersonaje = new personaje();
-            NuevoPersonaje.Datos.CargarDatos();
-            System.Console.WriteLine(NuevoPersonaje.Datos.Salud);
-        } 
-        */      
+
+        
+
     }
 }

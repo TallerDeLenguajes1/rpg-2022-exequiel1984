@@ -12,7 +12,13 @@ var ListadoPersonajes = new List<Personaje>();
 int CantidadPersonajes;
 CantidadPersonajes = rand.Next(1,6);
 
-for (int i = 0; i < CantidadPersonajes; i++)
+var NuevoPersonaje = new Personaje(); 
+
+    CargarDatos(NuevoPersonaje);
+    CargarCaracteristicas(NuevoPersonaje); 
+    Ataque(NuevoPersonaje);
+
+/* for (int i = 0; i < CantidadPersonajes; i++)
 {
     var NuevoPersonaje = new Personaje(); 
 
@@ -22,7 +28,7 @@ for (int i = 0; i < CantidadPersonajes; i++)
     ListadoPersonajes.Add(NuevoPersonaje);
 }
 
-MostrarLista(ListadoPersonajes);
+MostrarLista(ListadoPersonajes); */
 
 void CargarDatos(Personaje personaje)
 {            
@@ -62,3 +68,17 @@ static void MostrarLista(List<Personaje> Lista)
         System.Console.WriteLine("Armadura: " + personaje.Armadura + "\n");
     }
 }
+
+int Ataque(Personaje personaje){
+    Random rand = new Random();
+
+    int PoderDisparo = personaje.Destreza * personaje.Fuerza * personaje.Nivel; 
+    System.Console.WriteLine("Poder: " + PoderDisparo);
+    int EfectividadDisparo = rand.Next(1, 101);
+    EfectividadDisparo = EfectividadDisparo/100; // ERROR
+    System.Console.WriteLine("Efectividad: " + EfectividadDisparo);
+    int ValorAtaque = PoderDisparo * EfectividadDisparo;
+    System.Console.WriteLine("Valor Ataque: " + ValorAtaque);
+    return ValorAtaque;
+}
+
