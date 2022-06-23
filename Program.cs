@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System;
+using System.Net;
+using System.Text.Json;
 
 using rpg_2022_exequiel1984;
 
@@ -14,46 +15,26 @@ Personaje Peleador1 = new Personaje();
 Personaje Peleador2 = new Personaje();
 
 int CantidadPersonajes;
-CantidadPersonajes = rand.Next(1,6);
 
-/* var NuevoPersonaje = new Personaje(); 
+CantidadPersonajes = rand.Next(1,4)*2;
 
-    CargarDatos(NuevoPersonaje);
-    CargarCaracteristicas(NuevoPersonaje); 
-    CalcularAtaque(NuevoPersonaje);
+CargarListadoPersonajes(ListadoPersonajes, CantidadPersonajes);
 
-var Defensor = new Personaje();
+MostrarLista(ListadoPersonajes);
 
-    CargarDatos(Defensor);
-    CargarCaracteristicas(Defensor); 
-    CalcularDefensa(Defensor);
 
-ResultadoEnfrentamiento(NuevoPersonaje, Defensor); */
-
-for (int i = 0; i < CantidadPersonajes; i++)
-{
-    var NuevoPersonaje = new Personaje(); 
-
-    CargarDatos(NuevoPersonaje);
-    CargarCaracteristicas(NuevoPersonaje);  
-
-    ListadoPersonajes.Add(NuevoPersonaje);
-}
-
-Peleador1 = SeleccionarPersonaje(ListadoPersonajes);
+/* Peleador1 = SeleccionarPersonaje(ListadoPersonajes);
 MostrarPersonaje(Peleador1);
 Peleador2 = SeleccionarPersonaje(ListadoPersonajes);
 if (Peleador1.Nombre == Peleador2.Nombre)
 {
     Peleador2 = SeleccionarPersonaje(ListadoPersonajes); 
-}
-
-MostrarPersonaje(Peleador2);
+} */
 
 
 
 
-//MostrarLista(ListadoPersonajes);
+
 
 
 Personaje SeleccionarPersonaje(List<Personaje> ListaPersonajes){
@@ -63,14 +44,20 @@ Personaje SeleccionarPersonaje(List<Personaje> ListaPersonajes){
 }
 
 
+Personaje CrearPersonaje(){
+    Personaje NuevoPersonaje = new Personaje();
+    CargarDatos(NuevoPersonaje);
+    CargarCaracteristicas(NuevoPersonaje);
+    return NuevoPersonaje;
+}
+
 void CargarDatos(Personaje personaje)
 {            
         Random rand = new Random();
 
         int IndexTipo = rand.Next(0, Enum.GetValues(typeof(tipos)).Length);
         personaje.Tipo = Enum.GetName(typeof(tipos), IndexTipo);
-        int IndexNombre = rand.Next(0, Enum.GetValues(typeof(nombres)).Length);
-        personaje.Nombre = Enum.GetName(typeof(nombres), IndexNombre);
+        GetNombre(personaje);
         personaje.FechaNacimiento = new DateTime(rand.Next(1722, 2022), rand.Next(01, 13), rand.Next(01, 32));  
         personaje.Edad = personaje.CalcularEdad();          
         personaje.Salud = 100;
@@ -85,7 +72,17 @@ void CargarCaracteristicas(Personaje personaje){
         personaje.Armadura = rand.Next(1, 11);
 }
 
-static void MostrarLista(List<Personaje> Lista)
+void CargarListadoPersonajes(List<Personaje> ListadoPersonajes, int CantidadPersonajes)
+{
+    for (int i = 0; i < CantidadPersonajes; i++)
+    {
+        Personaje PersonajeACargar = CrearPersonaje();
+
+        ListadoPersonajes.Add(PersonajeACargar);
+    }
+}
+
+void MostrarLista(List<Personaje> Lista)
 {
     foreach (var personaje in Lista)
     {
@@ -104,15 +101,15 @@ static void MostrarLista(List<Personaje> Lista)
 
 void MostrarPersonaje(Personaje personaje){
     System.Console.WriteLine("\nTipo: " + personaje.Tipo);
-        System.Console.WriteLine("Nombre: " + personaje.Nombre);
-        System.Console.WriteLine("Fecha de Nacimiento: " + personaje.FechaNacimiento.ToShortDateString());
-        System.Console.WriteLine("Edad: " + personaje.Edad);
-        System.Console.WriteLine("Salud: " + personaje.Salud);
-        System.Console.WriteLine("Velocidad: " + personaje.Velocidad);
-        System.Console.WriteLine("Destreza: " + personaje.Destreza);
-        System.Console.WriteLine("Fuerza: " + personaje.Fuerza);
-        System.Console.WriteLine("Nivel: " + personaje.Nivel);
-        System.Console.WriteLine("Armadura: " + personaje.Armadura + "\n");
+    System.Console.WriteLine("Nombre: " + personaje.Nombre);
+    System.Console.WriteLine("Fecha de Nacimiento: " + personaje.FechaNacimiento.ToShortDateString());
+    System.Console.WriteLine("Edad: " + personaje.Edad);
+    System.Console.WriteLine("Salud: " + personaje.Salud);
+    System.Console.WriteLine("Velocidad: " + personaje.Velocidad);
+    System.Console.WriteLine("Destreza: " + personaje.Destreza);
+    System.Console.WriteLine("Fuerza: " + personaje.Fuerza);
+    System.Console.WriteLine("Nivel: " + personaje.Nivel);
+    System.Console.WriteLine("Armadura: " + personaje.Armadura + "\n");
 }
 
 void CalcularAtaque(Personaje personaje){
@@ -154,3 +151,38 @@ void ResultadoEnfrentamiento(Personaje atacante, Personaje defensor){
     defensor.Salud -= DanioProvocado;
     System.Console.WriteLine("Salud Defensor: " + defensor.Salud);
 }
+
+void GetNombre(Personaje personaje)
+{
+    var url = $"https://random-names-api.herokuapp.com/random";
+    var request = (HttpWebRequest)WebRequest.Create(url);
+    request.Method = "GET";
+    request.ContentType = "application/json";
+    request.Accept = "application/json";
+    try
+    {
+        using (WebResponse response = request.GetResponse())
+        {
+            using (Stream strReader = response.GetResponseStream())
+            {
+                if (strReader == null) return;
+                using (StreamReader objReader = new StreamReader(strReader))
+                {
+                    string responseBody = objReader.ReadToEnd();
+
+                    NombreYGeneroAleatorio NombreYGenero = JsonSerializer.Deserialize<NombreYGeneroAleatorio>(responseBody);
+
+                    personaje.Nombre = NombreYGenero.Body.Name;
+
+                    //System.Console.WriteLine(personaje.Nombre   );
+
+                }
+            }
+        }
+    }
+    catch (WebException ex)
+    {
+        Console.WriteLine("Problemas de acceso a la API");
+    }
+}
+
