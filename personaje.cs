@@ -23,6 +23,7 @@ namespace rpg_2022_exequiel1984
 
         private int valorAtaque;
         private int poderDefensa;
+        private int estado;
 
         public string Tipo { get => tipo; set => tipo = value; }
         public string Nombre { get => nombre; set => nombre = value; }
@@ -39,6 +40,7 @@ namespace rpg_2022_exequiel1984
 
         public int ValorAtaque { get => valorAtaque; set => valorAtaque = value; }
         public int PoderDefensa { get => poderDefensa; set => poderDefensa = value; }
+        public int Estado { get => estado; set => estado = value; }
 
         public Personaje(){
             this.ValorAtaque = 0;
@@ -53,9 +55,6 @@ namespace rpg_2022_exequiel1984
             }
             return edad;
         }  
-
-
-
 
     }
 }

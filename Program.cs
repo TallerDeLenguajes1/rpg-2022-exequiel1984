@@ -18,9 +18,58 @@ int CantidadPersonajes;
 
 CantidadPersonajes = rand.Next(1,4)*2;
 
+System.Console.WriteLine("\nCantidad de peleadores: " + CantidadPersonajes);
+
 CargarListadoPersonajes(ListadoPersonajes, CantidadPersonajes);
 
 MostrarLista(ListadoPersonajes);
+
+System.Console.WriteLine("Ingrese el nombre del Peleador 1: ");
+string NombrePeleador = Console.ReadLine();
+
+foreach (var personaje in ListadoPersonajes)
+{
+    if (personaje.Nombre == NombrePeleador)
+    {
+        Peleador1 = personaje;
+    }
+}
+
+System.Console.WriteLine("Ingrese el nombre del Peleador 2: ");
+NombrePeleador = Console.ReadLine();
+
+foreach (var personaje in ListadoPersonajes)
+{
+    if (personaje.Nombre == NombrePeleador)
+    {
+        Peleador2 = personaje;
+    }
+}
+
+
+do
+{
+    CalcularAtaque(Peleador1);
+    CalcularDefensa(Peleador2);
+    ResultadoEnfrentamiento(Peleador1, Peleador2);
+} while (Peleador2.Salud > 0);
+
+
+if (Peleador2.Salud == 0 || Peleador2.Salud < 0)
+{
+    Ganadores.Add(Peleador1);
+    ListadoPersonajes = ListadoPersonajes.Except(Ganadores).ToList();
+}
+
+
+System.Console.WriteLine("\n-----LISTADO GANADORES-----");
+MostrarLista(Ganadores);
+
+System.Console.WriteLine("\n-----LISTADO PERSONAJES SIN GANADORES-----");
+MostrarLista(ListadoPersonajes);
+
+
+
 
 
 /* Peleador1 = SeleccionarPersonaje(ListadoPersonajes);
@@ -29,19 +78,12 @@ Peleador2 = SeleccionarPersonaje(ListadoPersonajes);
 if (Peleador1.Nombre == Peleador2.Nombre)
 {
     Peleador2 = SeleccionarPersonaje(ListadoPersonajes); 
-} */
-
-
-
-
-
-
+} 
 
 Personaje SeleccionarPersonaje(List<Personaje> ListaPersonajes){
 
-    
     return ListaPersonajes[rand.Next(0,ListadoPersonajes.Count())];
-}
+}*/
 
 
 Personaje CrearPersonaje(){
@@ -86,16 +128,7 @@ void MostrarLista(List<Personaje> Lista)
 {
     foreach (var personaje in Lista)
     {
-        System.Console.WriteLine("\nTipo: " + personaje.Tipo);
-        System.Console.WriteLine("Nombre: " + personaje.Nombre);
-        System.Console.WriteLine("Fecha de Nacimiento: " + personaje.FechaNacimiento.ToShortDateString());
-        System.Console.WriteLine("Edad: " + personaje.Edad);
-        System.Console.WriteLine("Salud: " + personaje.Salud);
-        System.Console.WriteLine("Velocidad: " + personaje.Velocidad);
-        System.Console.WriteLine("Destreza: " + personaje.Destreza);
-        System.Console.WriteLine("Fuerza: " + personaje.Fuerza);
-        System.Console.WriteLine("Nivel: " + personaje.Nivel);
-        System.Console.WriteLine("Armadura: " + personaje.Armadura + "\n");
+        MostrarPersonaje(personaje);
     }
 }
 
@@ -123,7 +156,7 @@ void CalcularAtaque(Personaje personaje){
 void CalcularDefensa(Personaje personaje){
     Random rand = new Random();
 
-    personaje.PoderDefensa = personaje.Armadura * personaje.Velocidad; 
+    personaje.PoderDefensa = personaje.Armadura * personaje.Velocidad;
 }
 
 void ResultadoEnfrentamiento(Personaje atacante, Personaje defensor){
@@ -132,7 +165,7 @@ void ResultadoEnfrentamiento(Personaje atacante, Personaje defensor){
 
     System.Console.WriteLine("Valor ataque: " + atacante.ValorAtaque);
     System.Console.WriteLine("Poder Defensa: " + defensor.PoderDefensa);
-    System.Console.WriteLine("Maximo daño provocable: " + MaximoDanioProvocable);
+    //System.Console.WriteLine("Maximo daño provocable: " + MaximoDanioProvocable);
 
     if (atacante.ValorAtaque > defensor.PoderDefensa)
     {
@@ -149,7 +182,7 @@ void ResultadoEnfrentamiento(Personaje atacante, Personaje defensor){
     System.Console.WriteLine("Daño Provocado: " + DanioProvocado);
 
     defensor.Salud -= DanioProvocado;
-    System.Console.WriteLine("Salud Defensor: " + defensor.Salud);
+    System.Console.WriteLine("Salud Defensor: " + defensor.Salud + "\n");
 }
 
 void GetNombre(Personaje personaje)
