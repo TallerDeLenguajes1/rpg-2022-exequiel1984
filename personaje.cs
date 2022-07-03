@@ -6,6 +6,27 @@ using System.Text.Json;
 
 namespace rpg_2022_exequiel1984
 {
+    public enum tipos{
+            Boxeador,
+            MMA,
+            Titanes
+        };
+
+    public enum apodos{
+            Rojo,
+            Camacho,
+            Diabolo,
+            Acuananuta,
+            Cacique,
+            Cerebrus,
+            Hacker,
+            Pibe,
+            Capanga,
+            Hormiga,
+            Momia,
+            Karadagian
+        };
+
     public class Personaje {
         
         private string tipo;
@@ -13,7 +34,7 @@ namespace rpg_2022_exequiel1984
         private string apodo;
         private DateTime fechaNacimiento;   
         private int edad;     
-        private int salud;
+        private double salud;
 
         private int velocidad;
         private int destreza;
@@ -21,7 +42,7 @@ namespace rpg_2022_exequiel1984
         private int nivel;
         private int armadura;
 
-        private int valorAtaque;
+        private double valorAtaque;
         private int poderDefensa;
         private int estado;
 
@@ -29,7 +50,7 @@ namespace rpg_2022_exequiel1984
         public string Nombre { get => nombre; set => nombre = value; }
         public string Apodo { get => apodo; set => apodo = value; }
         public DateTime FechaNacimiento { get => fechaNacimiento; set => fechaNacimiento = value; }
-        public int Salud { get => salud; set => salud = value; }
+        public double Salud { get => salud; set => salud = value; }
         public int Edad { get => edad; set => edad = value; }
 
         public int Velocidad { get => velocidad; set => velocidad = value; }
@@ -38,7 +59,7 @@ namespace rpg_2022_exequiel1984
         public int Nivel { get => nivel; set => nivel = value; }        
         public int Armadura { get => armadura; set => armadura = value; }
 
-        public int ValorAtaque { get => valorAtaque; set => valorAtaque = value; }
+        public double ValorAtaque { get => valorAtaque; set => valorAtaque = value; }
         public int PoderDefensa { get => poderDefensa; set => poderDefensa = value; }
         public int Estado { get => estado; set => estado = value; }
 
