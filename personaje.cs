@@ -42,9 +42,7 @@ namespace rpg_2022_exequiel1984
         private int nivel;
         private int armadura;
 
-        private double valorAtaque;
-        private int poderDefensa;
-        private int estado;
+        private int batallasGanadas;
 
         public string Tipo { get => tipo; set => tipo = value; }
         public string Nombre { get => nombre; set => nombre = value; }
@@ -58,13 +56,11 @@ namespace rpg_2022_exequiel1984
         public int Fuerza { get => fuerza; set => fuerza = value; }
         public int Nivel { get => nivel; set => nivel = value; }        
         public int Armadura { get => armadura; set => armadura = value; }
-
-        public double ValorAtaque { get => valorAtaque; set => valorAtaque = value; }
-        public int PoderDefensa { get => poderDefensa; set => poderDefensa = value; }
-        public int Estado { get => estado; set => estado = value; }
+        
+        public int BatallasGanadas { get => batallasGanadas; set => batallasGanadas = value; }
 
         public Personaje(){
-            this.ValorAtaque = 0;
+            BatallasGanadas = 0;
         }
 
         public int CalcularEdad()

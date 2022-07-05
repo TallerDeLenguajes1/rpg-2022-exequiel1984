@@ -6,13 +6,7 @@ using System.Text.Json;
 
 using rpg_2022_exequiel1984;
 
-Random rand = new Random();
-
 var ListadoPersonajes = new List<Personaje>();
-var Ganadores = new List<Personaje>();
-
-Personaje Peleador1 = new Personaje();
-Personaje Peleador2 = new Personaje();
 
 int EleccionMenu = 0;
 
@@ -22,20 +16,21 @@ System.Console.WriteLine("ELIJA LA OPCION:");
 System.Console.WriteLine("1 - PARA CREAR PERSONAJES ALEATORIAMENTE");
 System.Console.WriteLine("2 - CREAR PERSONAJES MANUALMENTE");
 System.Console.WriteLine("3 - UTILIZAR PERSONAJES PREDEFINIDOS");
-System.Console.WriteLine("4 - VER LISTA DE GANADORES");
+System.Console.WriteLine("4 - VER RANKING ANTERIOR");
+System.Console.WriteLine("\nSu eleccion: ");
 EleccionMenu = Convert.ToInt32(Console.ReadLine());
 
 switch (EleccionMenu)
 {
     case 1:
         int CantidadPersonajes;
-
-        CantidadPersonajes = rand.Next(1, 4) * 2;
-
+        //CantidadPersonajes = rand.Next(1, 4);
+        CantidadPersonajes = 3;
         System.Console.WriteLine("\nCantidad de peleadores: " + CantidadPersonajes);
-
         CargarListadoPersonajesAleatorio(ListadoPersonajes, CantidadPersonajes);
+        Torneo(ListadoPersonajes);
         break;
+
     case 2:
         System.Console.WriteLine("\nCREACION DE PERSONAJES MANUAL\n");
 
@@ -49,111 +44,51 @@ switch (EleccionMenu)
         } while (ConsultaCrearPersonaje != "n");
 
         CrearListaPersonajesJson(ListadoPersonajes, "Lista_Personajes_manuales.json");
+        Torneo(ListadoPersonajes);
+
         break;
 
     case 3:
         System.Console.WriteLine("\nUSAR LISTA DE PERSONAJES DE ARCHIVO JSON");
         ListadoPersonajes = DeserealizarArchivoJson("Lista_Personajes_manuales.json");
+        Torneo(ListadoPersonajes);
+        break;
+
+    case 4:
+        VerRanking();
         break;
 }
 
-MostrarLista(ListadoPersonajes);
 
 
-System.Console.WriteLine("*****ENFRENTAMIENTO*****\n");
 
-string NombrePeleador = "";
 
-System.Console.WriteLine("Ingrese el nombre del peleador 1: ");
-NombrePeleador = Console.ReadLine();
-
-foreach (var personaje in ListadoPersonajes)
+List<string[]> LeerCSV(string nombreDeArchivo, char caracter)
 {
-    if (personaje.Nombre == NombrePeleador)
+    FileStream MiArchivo = new FileStream(nombreDeArchivo, FileMode.Open);
+    StreamReader StrReader = new StreamReader(MiArchivo);
+
+    string Linea = "";
+    List<string[]> LecturaDelArchivo = new List<string[]>();
+
+    while ((Linea = StrReader.ReadLine()) != null)
     {
-        Peleador1 = personaje;
+        string[] Fila = Linea.Split(caracter);
+        LecturaDelArchivo.Add(Fila);
     }
+
+    return LecturaDelArchivo;
 }
 
-
-System.Console.WriteLine("Ingrese el nombre del peleador 2: ");
-NombrePeleador = Console.ReadLine();
-
-foreach (var personaje in ListadoPersonajes)
+void CrearArchicoCSV(List<string> ListadoString)
 {
-    if (personaje.Nombre == NombrePeleador)
+    List<string> ListadoStringFormatoCSV = new List<string>();
+    foreach (var Linea in ListadoString)
     {
-        Peleador2 = personaje;
+        ListadoStringFormatoCSV.Add(Linea);
     }
+    File.WriteAllLines("Ranking.csv", ListadoStringFormatoCSV);
 }
-System.Console.WriteLine(Peleador1.Nombre + " VS " + Peleador2.Nombre);
-
-System.Console.WriteLine("\nPresione Enter para continuar\n");
-
-Console.ReadKey();
-
-for (int i = 0; i < 3; i++)
-{
-    System.Console.WriteLine("*****ROUND " + (i+1) + "*****");
-    Round(Peleador1, Peleador2);
-    Round(Peleador2,Peleador1);
-}
-
-
-
-void Round(Personaje PeleadorAtacante, Personaje PeleadorDefensor)
-{
-    Console.ReadKey();
-    CalcularAtaque(PeleadorAtacante);
-    Console.ReadKey();
-    CalcularDefensa(PeleadorDefensor);
-    Console.ReadKey();
-    ResultadoAtaqueVsDefensa(PeleadorAtacante, PeleadorDefensor);
-}
-
-System.Console.WriteLine("-----------------------------------------------------------------\n");
-System.Console.WriteLine("La salud de " + Peleador1.Nombre + " quedo en " + Peleador1.Salud);
-System.Console.WriteLine("\nLa salud de " + Peleador2.Nombre + " quedo en " + Peleador2.Salud);
-
-if (Peleador1.Salud > Peleador2.Salud)
-{
-    System.Console.WriteLine("\nEL GANADOR ES " + Peleador1.Nombre.ToUpper() + "\n");
-}
-
-if (Peleador1.Salud < Peleador2.Salud)
-{
-    System.Console.WriteLine("\nEL GANADOR ES " + Peleador2.Nombre.ToUpper() + "\n");
-}
-
-if (Peleador1.Salud == Peleador2.Salud)
-{
-    System.Console.WriteLine("El resultado fue un empate");
-}
-
-
-/* do
-{
-    CalcularAtaque(Peleador1);
-    CalcularDefensa(Peleador2);
-    ResultadoEnfrentamiento(Peleador1, Peleador2);
-} while (Peleador2.Salud > 0);
-
-
-if (Peleador2.Salud == 0 || Peleador2.Salud < 0)
-{
-    Ganadores.Add(Peleador1);
-    ListadoPersonajes = ListadoPersonajes.Except(Ganadores).ToList();
-}
-
-
-System.Console.WriteLine("\n-----LISTADO GANADORES-----");
-MostrarLista(Ganadores);
-
-System.Console.WriteLine("\n-----LISTADO PERSONAJES SIN GANADORES-----");
-MostrarLista(ListadoPersonajes); */
-
-
-
 
 
 Personaje CrearPersonajeAleatorio()
@@ -227,6 +162,8 @@ void CargarDatosAleatorios(Personaje personaje)
 
 void CargarDatosManual(Personaje personaje)
 {
+    Random rand = new Random();
+
     System.Console.WriteLine("ingrese el tipo: ");
     personaje.Tipo = Console.ReadLine();
     System.Console.WriteLine("ingrese el nombre: ");
@@ -289,47 +226,51 @@ void MostrarPersonaje(Personaje personaje)
     System.Console.WriteLine("Armadura: " + personaje.Armadura + "\n");
 }
 
-void CalcularAtaque(Personaje personaje)
+void CalcularAtaque(Personaje Atacante, Personaje Defensor)
 {
     Random rand = new Random();
 
-    double PoderDisparo = personaje.Destreza * personaje.Fuerza * personaje.Nivel;
+    Console.ReadKey();
+    System.Console.WriteLine("\nATACA " + Atacante.Nombre);
+
+    double PoderDisparo = Atacante.Destreza * Atacante.Fuerza * Atacante.Nivel;
     double EfectividadDisparo = rand.Next(1, 101);
     EfectividadDisparo /= 100;
-    personaje.ValorAtaque = PoderDisparo * EfectividadDisparo;
-    System.Console.WriteLine("\nEl ataque de " + personaje.Nombre + " es " + personaje.ValorAtaque);
-}
+    double ValorAtaque = PoderDisparo * EfectividadDisparo;
+    Console.ReadKey();
+    System.Console.WriteLine("\nEl ataque de " + Atacante.Nombre + " es " + ValorAtaque);
 
-void CalcularDefensa(Personaje personaje)
-{
-    personaje.PoderDefensa = personaje.Armadura * personaje.Velocidad;
-    System.Console.WriteLine("\nEl poder de defensa de " + personaje.Nombre + " es " + personaje.PoderDefensa);
-}
+    double PoderDefensa = Defensor.Armadura * Defensor.Velocidad;
+    Console.ReadKey();
+    System.Console.WriteLine("\nEl poder de defensa de " + Defensor.Nombre + " es " + PoderDefensa);
 
-void ResultadoAtaqueVsDefensa(Personaje atacante, Personaje defensor)
-{
     double DanioProvocado;
     int MaximoDanioProvocable = 500;
 
-    if (atacante.ValorAtaque > defensor.PoderDefensa)
+    if (ValorAtaque > PoderDefensa)
     {
-        DanioProvocado = atacante.ValorAtaque - defensor.PoderDefensa;
+        DanioProvocado = ValorAtaque - PoderDefensa;
         DanioProvocado /= MaximoDanioProvocable;
         DanioProvocado *= 100;
     }
     else
     {
+        Console.ReadKey();
         System.Console.WriteLine("\n¡¡¡EL VALOR DE LA DEFENSA ES MAYOR AL VALOR DEL ATAQUE!!!");
 
         DanioProvocado = 0;
     }
 
-    System.Console.WriteLine("\nEl daño Provocado a " + defensor.Nombre + " fue " + DanioProvocado);
-
-    defensor.Salud -= DanioProvocado;
     Console.ReadKey();
-    System.Console.WriteLine("\nLa salud de " + defensor.Nombre + " quedo en " + defensor.Salud + "\n");
+    System.Console.WriteLine("\nEl daño Provocado a " + Defensor.Nombre + " fue " + DanioProvocado);
+
+    Defensor.Salud -= DanioProvocado;
+    Console.ReadKey();
+    System.Console.WriteLine("\nLa salud de " + Defensor.Nombre + " quedo en " + Defensor.Salud + "\n");
 }
+
+
+
 
 static void CrearListaPersonajesJson(List<Personaje> Lista, string NombreNuevoArchivoJson)
 {
@@ -361,3 +302,137 @@ static List<Personaje> DeserealizarArchivoJson(string NombreArchivoJson)
     return ListaDeserealizada;
 }
 
+void VerRanking()
+{
+    List<string[]> LecturaDelArchivo = LeerCSV("Ranking.csv", ',');
+    System.Console.WriteLine("\n       *****RANKING*****\n");
+    System.Console.WriteLine("Posicion - PELEADOR - BATALLAS GANADAS");
+
+    for (int i = LecturaDelArchivo.Count() - 1; i >= 0; i--)
+    {
+        Console.WriteLine(LecturaDelArchivo[i][0] + "        - " + LecturaDelArchivo[i][1] + " -            " + LecturaDelArchivo[i][2]);
+    }
+}
+
+void Torneo(List<Personaje> ListadoPersonajes)
+{
+    Random rand = new Random();
+
+    var Eliminados = new List<Personaje>();
+    var ListadoStringRanking = new List<string>();
+
+    Personaje Peleador1 = new Personaje();
+    Personaje Peleador2 = new Personaje();
+
+    MostrarLista(ListadoPersonajes);
+
+    do
+    {
+        System.Console.WriteLine("\n*****ENFRENTAMIENTO*****\n");
+
+        string NombrePeleador = "";
+
+        System.Console.WriteLine("Ingrese el nombre del peleador 1: ");
+        NombrePeleador = Console.ReadLine();
+
+        foreach (var personaje in ListadoPersonajes)
+        {
+            if (personaje.Nombre == NombrePeleador)
+            {
+                Peleador1 = personaje;
+            }
+        }
+
+
+        System.Console.WriteLine("Ingrese el nombre del peleador 2: ");
+        NombrePeleador = Console.ReadLine();
+
+        foreach (var personaje in ListadoPersonajes)
+        {
+            if (personaje.Nombre == NombrePeleador)
+            {
+                Peleador2 = personaje;
+            }
+        }
+        System.Console.WriteLine("\n" + Peleador1.Nombre.ToUpper() + " VS " + Peleador2.Nombre.ToUpper());
+
+        System.Console.WriteLine("\nPresione Enter para continuar\n");
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            Console.ReadKey();
+            System.Console.WriteLine("*****ROUND " + (i + 1) + "*****");
+            CalcularAtaque(Peleador1, Peleador2);
+            CalcularAtaque(Peleador2, Peleador1);
+        }
+
+
+
+
+        Console.ReadKey();
+        System.Console.WriteLine("-----------------------------------------------------------------\n");
+        System.Console.WriteLine("\n*****RESULTADO DE LA BATALLA*****");
+        System.Console.WriteLine("\nLa salud de " + Peleador1.Nombre + " quedo en " + Peleador1.Salud);
+        Console.ReadKey();
+        System.Console.WriteLine("\nLa salud de " + Peleador2.Nombre + " quedo en " + Peleador2.Salud);
+
+        if (Peleador1.Salud > Peleador2.Salud)
+        {
+            Console.ReadKey();
+            System.Console.WriteLine("\nEL GANADOR ES " + Peleador1.Nombre.ToUpper() + "\n");
+            Peleador1.Salud = 100;
+            Peleador1.BatallasGanadas++;
+            ListadoStringRanking.Add(ListadoPersonajes.Count() + "," + Peleador2.Nombre + "," + Peleador2.BatallasGanadas);
+            Console.ReadKey();
+            System.Console.WriteLine(Peleador2.Nombre + " quedo en la posicion " + ListadoPersonajes.Count());
+            Eliminados.Add(Peleador2);
+            ListadoPersonajes = ListadoPersonajes.Except(Eliminados).ToList();
+        }
+
+        if (Peleador1.Salud < Peleador2.Salud)
+        {
+            Console.ReadKey();
+            System.Console.WriteLine("\nEL GANADOR ES " + Peleador2.Nombre.ToUpper() + "\n");
+            Peleador2.Salud = 100;
+            Peleador2.BatallasGanadas++;
+            ListadoStringRanking.Add(ListadoPersonajes.Count() + "," + Peleador1.Nombre + "," + Peleador1.BatallasGanadas);
+            Console.ReadKey();
+            System.Console.WriteLine(Peleador1.Nombre + " quedo en la posicion " + ListadoPersonajes.Count());
+            Eliminados.Add(Peleador1);
+            ListadoPersonajes = ListadoPersonajes.Except(Eliminados).ToList();
+        }
+
+        if (Peleador1.Salud == Peleador2.Salud)
+        {
+            Console.ReadKey();
+            System.Console.WriteLine("El resultado fue un empate");
+            Peleador1.Salud = 100;
+            Peleador2.Salud = 100;
+        }
+
+        Console.ReadKey();
+        System.Console.WriteLine("\nLos peleadores que siguen en competencia son:");
+
+        foreach (var personaje in ListadoPersonajes)
+        {
+            System.Console.WriteLine(personaje.Nombre);
+        }
+
+    } while (ListadoPersonajes.Count() > 1);
+
+
+    //Para agregar el ultimo personaje al ranking
+    foreach (var personaje in ListadoPersonajes)
+    {
+        ListadoStringRanking.Add(ListadoPersonajes.Count() + "," + personaje.Nombre + "," + personaje.BatallasGanadas);
+        Console.ReadKey();
+        System.Console.WriteLine("\n" + personaje.Nombre + " quedo en la posicion " + ListadoPersonajes.Count());
+        Eliminados.Add(personaje);
+        ListadoPersonajes = ListadoPersonajes.Except(Eliminados).ToList();
+    }
+
+    CrearArchicoCSV(ListadoStringRanking);
+
+    VerRanking();
+}
