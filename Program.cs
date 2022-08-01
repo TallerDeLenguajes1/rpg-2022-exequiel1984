@@ -373,7 +373,7 @@ void Torneo(List<Personaje> ListadoPersonajes)
             CalcularAtaque(Peleador1, Peleador2);
             CalcularAtaque(Peleador2, Peleador1);
 
-            if (Peleador1.Salud <= 0 || Peleador1.Salud <= 0)
+            if (Peleador1.Salud <= 0 || Peleador2.Salud <= 0)
             {
                 i = 3;
             }
