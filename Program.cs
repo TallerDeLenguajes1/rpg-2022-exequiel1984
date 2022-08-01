@@ -131,9 +131,6 @@ string GetNombre()
                     NombreYGenero = JsonSerializer.Deserialize<NombreYGeneroAleatorio>(responseBody);
 
                     return NombreYGenero.Body.Name;
-
-                    //System.Console.WriteLine(personaje.Nombre   );
-
                 }
             }
         }
@@ -226,48 +223,7 @@ void MostrarPersonaje(Personaje personaje)
     System.Console.WriteLine("Armadura: " + personaje.Armadura + "\n");
 }
 
-void CalcularAtaque(Personaje Atacante, Personaje Defensor)
-{
-    Random rand = new Random();
 
-    Console.ReadKey();
-    System.Console.WriteLine("\nATACA " + Atacante.Nombre);
-
-    double PoderDisparo = Atacante.Destreza * Atacante.Fuerza * Atacante.Nivel;
-    double EfectividadDisparo = rand.Next(1, 101);
-    EfectividadDisparo /= 100;
-    double ValorAtaque = PoderDisparo * EfectividadDisparo;
-    Console.ReadKey();
-    System.Console.WriteLine("\nEl ataque de " + Atacante.Nombre + " es " + ValorAtaque);
-
-    double PoderDefensa = Defensor.Armadura * Defensor.Velocidad;
-    Console.ReadKey();
-    System.Console.WriteLine("\nEl poder de defensa de " + Defensor.Nombre + " es " + PoderDefensa);
-
-    double DanioProvocado;
-    int MaximoDanioProvocable = 500;
-
-    if (ValorAtaque > PoderDefensa)
-    {
-        DanioProvocado = ValorAtaque - PoderDefensa;
-        DanioProvocado /= MaximoDanioProvocable;
-        DanioProvocado *= 100;
-    }
-    else
-    {
-        Console.ReadKey();
-        System.Console.WriteLine("\n¡¡¡EL VALOR DE LA DEFENSA ES MAYOR AL VALOR DEL ATAQUE!!!");
-
-        DanioProvocado = 0;
-    }
-
-    Console.ReadKey();
-    System.Console.WriteLine("\nEl daño Provocado a " + Defensor.Nombre + " fue " + DanioProvocado);
-
-    Defensor.Salud -= DanioProvocado;
-    Console.ReadKey();
-    System.Console.WriteLine("\nLa salud de " + Defensor.Nombre + " quedo en " + Defensor.Salud + "\n");
-}
 
 
 
@@ -313,6 +269,57 @@ void VerRanking()
         Console.WriteLine(LecturaDelArchivo[i][0] + "        - " + LecturaDelArchivo[i][1] + " -            " + LecturaDelArchivo[i][2]);
     }
 }
+
+
+void CalcularAtaque(Personaje Atacante, Personaje Defensor)
+{
+    Random rand = new Random();
+
+    Console.ReadKey();
+    System.Console.WriteLine("\nATACA " + Atacante.Nombre);
+
+    double PoderDisparo = Atacante.Destreza * Atacante.Fuerza * Atacante.Nivel;
+    double EfectividadDisparo = rand.Next(1, 101);
+    EfectividadDisparo /= 100;
+    double ValorAtaque = PoderDisparo * EfectividadDisparo;
+    Console.ReadKey();
+    System.Console.WriteLine("\nEl ataque de " + Atacante.Nombre + " es " + ValorAtaque);
+
+    double PoderDefensa = Defensor.Armadura * Defensor.Velocidad;
+    Console.ReadKey();
+    System.Console.WriteLine("\nEl poder de defensa de " + Defensor.Nombre + " es " + PoderDefensa);
+
+    double DanioProvocado;
+    int MaximoDanioProvocable = 500;
+
+    if (ValorAtaque > PoderDefensa)
+    {
+        DanioProvocado = ValorAtaque - PoderDefensa;
+        DanioProvocado /= MaximoDanioProvocable;
+        DanioProvocado *= 100;
+    }
+    else
+    {
+        Console.ReadKey();
+        System.Console.WriteLine("\n¡¡¡EL VALOR DE LA DEFENSA ES MAYOR AL VALOR DEL ATAQUE!!!");
+
+        DanioProvocado = 0;
+    }
+
+    Console.ReadKey();
+    System.Console.WriteLine("\nEl daño Provocado a " + Defensor.Nombre + " fue " + DanioProvocado);
+
+    Defensor.Salud -= DanioProvocado;
+
+    if (Defensor.Salud <= 0)
+    {
+        Defensor.Salud = 0;
+    }
+
+    Console.ReadKey();
+    System.Console.WriteLine("\nLa salud de " + Defensor.Nombre + " quedo en " + Defensor.Salud + "\n");
+}
+
 
 void Torneo(List<Personaje> ListadoPersonajes)
 {
@@ -365,6 +372,11 @@ void Torneo(List<Personaje> ListadoPersonajes)
             System.Console.WriteLine("*****ROUND " + (i + 1) + "*****");
             CalcularAtaque(Peleador1, Peleador2);
             CalcularAtaque(Peleador2, Peleador1);
+
+            if (Peleador1.Salud <= 0 || Peleador1.Salud <= 0)
+            {
+                i = 3;
+            }
         }
 
 
